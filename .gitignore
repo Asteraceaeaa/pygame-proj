@@ -1,0 +1,29 @@
+# Виртуальное окружение
+venv/
+venv38/
+env/
+ENV/
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Файлы IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Файлы проекта, которые не нужно коммитить
+*.db
+*.sqlite3
+config.py
+.env
+
+# Временные файлы
+*.log
+*.tmp
+.DS_Store

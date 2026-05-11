@@ -1,0 +1,37 @@
+import pygame as pg
+# from constants import *
+
+pg.init()
+
+screen = pg.display.set_mode((1200, 960))
+pg.display.set_caption("Game")
+icon = pg.image.load("icon.jpg")
+pg.display.set_icon(icon)
+
+font = pg.font.Font('fonts/Unutterable-Regular.ttf', 50)
+text_surface = font.render('Игрушка', False, 'Red')
+
+clock = pg.time.Clock()
+
+square = pg.Surface((1000, 200))
+square.fill('Blue')
+
+player = pg.image.load("icon.jpg")
+
+# screen.fill((0, 0, 255))
+run = True
+while run:
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            run = False
+            pg.quit()
+
+    screen.blit(square, (100, 0))
+    screen.blit(text_surface, (300, 0))
+    screen.blit(player, (100, 100))
+
+    pg.draw.polygon(screen, "Red", [(0, 23), (23, 68), (78, 23)])
+
+    pg.display.flip()
+    clock.tick(60)

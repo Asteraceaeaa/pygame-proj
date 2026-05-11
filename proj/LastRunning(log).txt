@@ -1,0 +1,10 @@
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:46:38
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:47:14
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:47:35
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:47:56
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:48:10
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:49:35
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:50:02
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:50:09
+File /home/asterwace/asterwace/Учеба/schedule-OOP/main.py launched by asterwace-lp at 12.05.2026  01:50:15
+File /home/asterwace/asterwace/Учеба/schedule-OOP/proj/main.py launched by asterwace-lp at 12.05.2026  01:52:57
