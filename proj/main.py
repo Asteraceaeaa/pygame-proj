@@ -32,7 +32,7 @@ clock = pg.time.Clock()
 
 running = True
 state = 0 
-states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"], "Вы проиграли!"]
+states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"], ["Вы проиграли!", "Пауза"]]
 cur_level = 0
 while running:
 
@@ -133,9 +133,74 @@ while running:
             clock.tick(60)
 
     if state == 2:
-        
+        substate = -1
         print(f"Выбрано: {states[state][cur_level]}")
-        state = 3
+        game = True
+        alive = True
+
+        
+        # Позиция персонажа
+        hero_x = WIDTH // 2
+        hero_y = HEIGHT // 2
+        hero_speed = 5
+        facing_right = True  # True - смотрит вправо, False - влево
+        
+        # Загрузи изображения ДО цикла (не внутри!)
+        hero_right_img = pg.image.load("assets/hero/frame_028.png")
+        hero_left_img = pg.image.load("assets/hero/frame_016.png")
+        hero_right_img = pg.transform.scale(hero_right_img, (50, 50))  # подгони размер
+        hero_left_img = pg.transform.scale(hero_left_img, (50, 50))
+
+        while game:
+            pause = False
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    game == False
+                    running = False
+                    state = 0
+
+                if event.type == pg.K_ESCAPE:
+                    pause = True
+                    substate = 2
+                    
+            keys = pg.key.get_pressed()
+            if keys[pg.K_LEFT]:
+                hero_x -= hero_speed
+                facing_right = False
+            if keys[pg.K_RIGHT]:
+                hero_x += hero_speed
+                facing_right = True
+            if keys[pg.K_UP]:
+                hero_y -= hero_speed
+            if keys[pg.K_DOWN]:
+                hero_y += hero_speed
+
+                """Логика управления"""
+
+            """Логика уровня"""
+
+            screen.fill("Blue")
+
+            if facing_right:
+                screen.blit(hero_right_img, (hero_x, hero_y))
+            else:
+                screen.blit(hero_left_img, (hero_x, hero_y))
+
+            if state != 2: break
+
+
+            title = font_b.render(states[state][cur_level], True, "White")
+
+
+            pg.display.flip()  # <-- ОБЯЗАТЕЛЬНО добавь
+            clock.tick(60)     # <-- ОБЯЗАТЕЛЬНО добавь
+
+            while pause:
+                    pass
+
+                
+
 
     if state == 3:
         print(f"Текущий статус: {states[state]}")
