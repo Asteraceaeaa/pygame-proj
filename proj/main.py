@@ -27,12 +27,12 @@ font_b = pg.font.Font("fonts/Luxembourg1910Ombre.ttf", 100)
 font_m = pg.font.Font("fonts/Luxembourg1910Ombre.ttf", 50)
 font_s = pg.font.Font("fonts/Luxembourg1910Ombre.ttf", 30)
 
-screen = pg.display.set_mode((WIDTH, HEIGHT))
+screen = pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
 clock = pg.time.Clock()
 
 running = True
 state = 0 
-states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"]]
+states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"], "Вы проиграли!"]
 cur_level = 0
 while running:
 
@@ -40,7 +40,7 @@ while running:
         print(f"Текущий статус: {states[state]}")
         menu = True
 
-        options = ["START GAME", "EXIT"]
+        options = ["Начать игру", "Выход"]
         selected = 0
         while menu:
 
@@ -67,14 +67,17 @@ while running:
 
             screen.fill("Black")
 
+            WIDTH_RESIZABLE = screen.get_width()
+            HEIGHT_RESIZABLE = screen.get_height()
+
             title = font_b.render(states[state], True, "White")
-            title_rect = title.get_rect(center=(WIDTH//2, HEIGHT//4))
+            title_rect = title.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//4))
             screen.blit(title, title_rect)
 
             for i, option in enumerate(options):
                 color = "Yellow" if i == selected else "White"
                 text = font_s.render(option, True, color)
-                rect = text.get_rect(center=(WIDTH//2, HEIGHT//2.5 + i * 50))
+                rect = text.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//2.5 + i * 50))
                 screen.blit(text, rect)
 
             pg.display.flip()
@@ -111,22 +114,78 @@ while running:
                         # print(selected)
 
             screen.fill("Black")
+
+            WIDTH_RESIZABLE = screen.get_width()
+            HEIGHT_RESIZABLE = screen.get_height()
+
             if state != 1: break
             title = font_b.render(states[state], True, "White")
-            title_rect = title.get_rect(center=(WIDTH//2, HEIGHT//4))
+            title_rect = title.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//4))
             screen.blit(title, title_rect)
 
             for i, option in enumerate(options):
                 color = "Yellow" if i == selected else "White"
                 text = font_s.render(option, True, color)
-                rect = text.get_rect(center=(WIDTH//2, HEIGHT//2.5 + i * 50))
+                rect = text.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//2.5 + i * 50))
                 screen.blit(text, rect)
 
             pg.display.flip()
             clock.tick(60)
+
     if state == 2:
+        
         print(f"Выбрано: {states[state][cur_level]}")
-        break
+        state = 3
+
+    if state == 3:
+        print(f"Текущий статус: {states[state]}")
+        game_over = True
+
+        options = ["Начать заново", "Выйти в меню"]
+        selected = 0
+        while game_over:
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    game_over = False
+                    running = False
+                    print("Exit...")
+                
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_UP:
+                        selected = 0 if selected == 1 else 1
+                    elif event.key == pg.K_DOWN:
+                        selected = 1 if selected == 0 else 0
+                    elif event.key == pg.K_RETURN:
+                        game_over = False
+                        state = 2
+                        if selected == 1:
+                            running = False
+                            state = 0
+                            print("Exit...")
+                            
+
+            WIDTH_RESIZABLE = screen.get_width()
+            HEIGHT_RESIZABLE = screen.get_height()
+
+            screen.fill("Black")
+
+            title = font_b.render(states[state], True, "White")
+            title_rect = title.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//4))
+            screen.blit(title, title_rect)
+
+            for i, option in enumerate(options):
+                color = "Yellow" if i == selected else "White"
+                text = font_s.render(option, True, color)
+                rect = text.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//2.5 + i * 50))
+                screen.blit(text, rect)
+
+            pg.display.flip()
+            clock.tick(60)
+    
+
+
+
 
 pg.quit()
 
