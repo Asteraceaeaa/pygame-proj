@@ -27,3 +27,24 @@ config.py
 *.log
 *.tmp
 .DS_Store
+
+
+echo "# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+
+
+# Pygame specific
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log" > .gitignore
+

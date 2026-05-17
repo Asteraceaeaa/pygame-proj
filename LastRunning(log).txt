@@ -1,1 +1,2 @@
 File /home/asterwace/asterwace/Учеба/schedule-OOP/proj/main.py launched by asterwace-lp at 12.05.2026  01:52:39
+File /home/asterwace/asterwace/Учеба/schedule-OOP/proj/main.py launched by asterwace-lp at 12.05.2026  03:17:36

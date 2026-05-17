@@ -31,12 +31,14 @@ screen = pg.display.set_mode((WIDTH, HEIGHT), pg.RESIZABLE)
 clock = pg.time.Clock()
 
 running = True
-state = 0 
-states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"], ["Вы проиграли!", "Пауза"]]
+state = 0
+states = ["МЕНЮ", "ВЫБОР УРОВНЯ", ["Уровень 1", "Уровень 2", "Уровень 3"], ["Вы проиграли!", "Пауза", "Вы выиграли!"]]
 cur_level = 0
+
 while running:
 
     if state == 0:
+        # MENU
         print(f"Текущий статус: {states[state]}")
         menu = True
 
@@ -64,7 +66,6 @@ while running:
                             print("Exit...")
                             
                             
-
             screen.fill("Black")
 
             WIDTH_RESIZABLE = screen.get_width()
@@ -113,6 +114,8 @@ while running:
                             
                         # print(selected)
 
+
+            # Отрисовка
             screen.fill("Black")
 
             WIDTH_RESIZABLE = screen.get_width()
@@ -138,32 +141,97 @@ while running:
         game = True
         alive = True
 
-        
-        # Позиция персонажа
-        hero_x = WIDTH // 2
-        hero_y = HEIGHT // 2
+        # Переменные для паузы (добавьте в начало игры)
+        pause = False
+        pause_selected = 0
+        pause_options = ["Продолжить", "Начать заново", "Выйти в меню"]
+
+
+        hero_x = screen.get_width() // 2
+        hero_y = screen.get_height() // 2
         hero_speed = 5
         facing_right = True  # True - смотрит вправо, False - влево
-        
-        # Загрузи изображения ДО цикла (не внутри!)
+
         hero_right_img = pg.image.load("assets/hero/frame_028.png")
         hero_left_img = pg.image.load("assets/hero/frame_016.png")
-        hero_right_img = pg.transform.scale(hero_right_img, (50, 50))  # подгони размер
+        hero_right_img = pg.transform.scale(hero_right_img, (50, 50))
         hero_left_img = pg.transform.scale(hero_left_img, (50, 50))
 
+        enemy = pg.Surface((100, 100))
+        enemy.fill("Red")
+
         while game:
-            pause = False
+            # Вместо вашего пустого while pause:
+            WIDTH_RESIZABLE = screen.get_width()
+            HEIGHT_RESIZABLE = screen.get_height()
+
+            # В игровом цикле замените пустой while pause на:
+            if pause:
+                # Рисуем затемненный фон
+                dark_overlay = pg.Surface((WIDTH_RESIZABLE, HEIGHT_RESIZABLE))
+                dark_overlay.set_alpha(180)
+                dark_overlay.fill((0, 0, 0))
+                screen.blit(dark_overlay, (0, 0))
+                
+                # Заголовок "ПАУЗА"
+                pause_title = font_b.render("ПАУЗА", True, "Yellow")
+                title_rect = pause_title.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//4))
+                screen.blit(pause_title, title_rect)
+                
+                # Отрисовка пунктов меню паузы
+                for i, option in enumerate(pause_options):
+                    color = "Yellow" if i == pause_selected else "White"
+                    text = font_s.render(option, True, color)
+                    rect = text.get_rect(center=(WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//2 + i * 60))
+                    screen.blit(text, rect)
+                
+                # Обработка событий в меню паузы
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        running = False
+                        game = False
+                        pause = False
+                    
+                    if event.type == pg.KEYDOWN:
+                        if event.key == pg.K_UP:
+                            pause_selected = (pause_selected - 1) % len(pause_options)
+                        elif event.key == pg.K_DOWN:
+                            pause_selected = (pause_selected + 1) % len(pause_options)
+                        elif event.key == pg.K_RETURN:
+                            if pause_selected == 0:  # Продолжить
+                                pause = False
+                            elif pause_selected == 1:  # Начать заново
+                                # Сброс игры
+                                hero_x = WIDTH // 2
+                                hero_y = HEIGHT // 2
+                                pause = False
+                                # Здесь сбросить все переменные уровня
+                            elif pause_selected == 2:  # Выйти в меню
+                                state = 0
+                                game = False
+                                pause = False
+                        elif event.key == pg.K_ESCAPE:  # Выход из паузы по ESC
+                            pause = False
+                
+                pg.display.flip()
+                clock.tick(60)
+                continue  # Пропускаем остальную логику игры в этом кадре
+            
+
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    game == False
+                    game = False
                     running = False
                     state = 0
 
-                if event.type == pg.K_ESCAPE:
-                    pause = True
-                    substate = 2
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pause = True
+                        # substate = 2
                     
+
+            """Логика управления"""
             keys = pg.key.get_pressed()
             if keys[pg.K_LEFT]:
                 hero_x -= hero_speed
@@ -176,11 +244,14 @@ while running:
             if keys[pg.K_DOWN]:
                 hero_y += hero_speed
 
-                """Логика управления"""
-
             """Логика уровня"""
 
+
+
+
             screen.fill("Blue")
+
+            screen.blit(enemy, (WIDTH_RESIZABLE//2, HEIGHT_RESIZABLE//2))
 
             if facing_right:
                 screen.blit(hero_right_img, (hero_x, hero_y))
@@ -195,11 +266,6 @@ while running:
 
             pg.display.flip()  # <-- ОБЯЗАТЕЛЬНО добавь
             clock.tick(60)     # <-- ОБЯЗАТЕЛЬНО добавь
-
-            while pause:
-                    pass
-
-                
 
 
     if state == 3:
@@ -248,9 +314,6 @@ while running:
             pg.display.flip()
             clock.tick(60)
     
-
-
-
 
 pg.quit()
 
